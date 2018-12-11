@@ -29,12 +29,13 @@ type reader struct {
 	useFile bool
 }
 
-// File returns an io.Reader lazily loads a file set as a flag.Value.
+// File returns an io.Reader that lazily loads a file set as a flag.Value.
+// Pass StdIO ("-") to read from standard input.
 func File(defaultPath string) Reader {
 	return &reader{path: defaultPath, useFile: true}
 }
 
-// URL returns an io.Reader lazily loads an HTTP(S) URL set as a flag.Value.
+// URL returns an io.Reader that lazily loads an HTTP(S) URL set as a flag.Value.
 func URL(defaultPath string, client *http.Client) Reader {
 	if client == nil {
 		client = http.DefaultClient
