@@ -16,7 +16,10 @@ type Reader interface {
 	flag.Getter
 }
 
-const StdIO = "-" // Pass to set Stdin/Stdout as the default
+const (
+	// StdIO can be passed to File to set Stdin as the default
+	StdIO = "-"
+)
 
 type reader struct {
 	buf     *bufio.Reader
@@ -26,10 +29,12 @@ type reader struct {
 	useFile bool
 }
 
+// File returns an io.Reader lazily loads a file set as a flag.Value.
 func File(defaultPath string) Reader {
 	return &reader{path: defaultPath, useFile: true}
 }
 
+// URL returns an io.Reader lazily loads an HTTP(S) URL set as a flag.Value.
 func URL(defaultPath string, client *http.Client) Reader {
 	if client == nil {
 		client = http.DefaultClient
@@ -37,6 +42,7 @@ func URL(defaultPath string, client *http.Client) Reader {
 	return &reader{path: defaultPath, client: client}
 }
 
+// FileOrURL is an io.Reader that lazily opens a URL or file path set as a flag.Value.
 func FileOrURL(defaultPath string, client *http.Client) Reader {
 	if client == nil {
 		client = http.DefaultClient
