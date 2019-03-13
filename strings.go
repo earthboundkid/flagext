@@ -9,9 +9,6 @@ type Strings []string
 
 // Set implements flag.Value
 func (ss *Strings) Set(val string) error {
-	if ss == nil {
-		*ss = Strings{}
-	}
 	*ss = append(*ss, val)
 	return nil
 }
