@@ -20,9 +20,9 @@ const (
 // via the returned flag.Value
 func Logger(l *log.Logger, mode logMode) flag.Value {
 	if mode == LogVerbose {
-		l.SetOutput(os.Stderr)
-	} else {
 		l.SetOutput(ioutil.Discard)
+	} else {
+		l.SetOutput(os.Stderr)
 	}
 	return logger{
 		l, mode,
