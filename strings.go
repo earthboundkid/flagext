@@ -1,6 +1,7 @@
 package flagext
 
 import (
+	"flag"
 	"strings"
 )
 
@@ -27,4 +28,14 @@ func (ss *Strings) Get() interface{} {
 		return []string(nil)
 	}
 	return []string(*ss)
+}
+
+// StringsVar is a convenience function for adding a slice of strings to a FlagSet.
+// If nil, fl defaults to flag.CommandLine.
+func StringsVar(fl *flag.FlagSet, ss *[]string, name, usage string) {
+	if fl == nil {
+		fl = flag.CommandLine
+	}
+
+	fl.Var((*Strings)(ss), name, usage)
 }
