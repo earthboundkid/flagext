@@ -40,4 +40,34 @@ func ExampleMustHave_noMissingFlag() {
 	fs.String("c", "", "this value is optional")
 	fs.Parse([]string{"-a", "set", "-b", "set"})
 	flagext.MustHave(fs, "a", "b")
+	// Output:
+}
+
+func ExampleMustHaveArgs_wrongNumber() {
+	var buf strings.Builder
+	defer func() {
+		recover()
+		fmt.Println(buf.String())
+	}()
+
+	fs := flag.NewFlagSet("ExampleMustHaveArgs", flag.PanicOnError)
+	fs.SetOutput(&buf)
+	fs.Usage = func() {
+		fmt.Fprintf(fs.Output(), "Usage:\n\tExampleMustHaveArgs [optional arg]")
+	}
+
+	fs.Parse([]string{"--", "one", "two"})
+	flagext.MustHaveArgs(fs, 0, 1)
+	// Output:
+	// must have between 0 and 1 args; got 2
+	// Usage:
+	// 	ExampleMustHaveArgs [optional arg]
+}
+
+func ExampleMustHaveArgs_correctNumber() {
+	fs := flag.NewFlagSet("ExampleMustHave", flag.PanicOnError)
+	fs.String("a", "", "an option")
+	fs.Parse([]string{"--", "-a", "-b", "-c"})
+	flagext.MustHaveArgs(fs, 3, 3)
+	// Output:
 }
