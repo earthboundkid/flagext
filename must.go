@@ -10,7 +10,7 @@ import (
 // MustHave is a convenince method that checks that the named flags
 // were set on fl. Missing flags are treated with the policy of
 // fl.ErrorHandling(): ExitOnError, ContinueOnError, or PanicOnError.
-// Returned errors will have type MissingFlags.
+// Returned errors will have type MissingFlagsError.
 //
 // If nil, fl defaults to flag.CommandLine.
 func MustHave(fl *flag.FlagSet, names ...string) error {
@@ -21,7 +21,7 @@ func MustHave(fl *flag.FlagSet, names ...string) error {
 	fl.Visit(func(f *flag.Flag) {
 		seen[f.Name] = true
 	})
-	var missing MissingFlags
+	var missing MissingFlagsError
 	for _, name := range names {
 		if !seen[name] {
 			missing = append(missing, name)
@@ -44,12 +44,12 @@ func MustHave(fl *flag.FlagSet, names ...string) error {
 	return missing
 }
 
-// MissingFlags is the error type returned by MustHave.
-type MissingFlags []string
+// MissingFlagsError is the error type returned by MustHave.
+type MissingFlagsError []string
 
-func (missing MissingFlags) Error() string {
+func (missing MissingFlagsError) Error() string {
 	if len(missing) == 0 {
-		return "MissingFlags<empty>"
+		return "MissingFlagsError<empty>"
 	}
 	if len(missing) == 1 {
 		return fmt.Sprintf("missing required flag: %s", missing[0])
