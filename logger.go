@@ -50,14 +50,24 @@ func (l logger) Set(s string) error {
 	verbose := l.mode == LogVerbose
 	silent := l.mode == LogSilent
 	switch {
-	case verbose && v, silent && !v:
+	case verbose && v,
+		silent && !v:
 		w = os.Stderr
-	case verbose && !v, silent && v:
+	case verbose && !v,
+		silent && v:
 		w = ioutil.Discard
 	}
 	l.l.SetOutput(w)
 	return err
 }
-func (l logger) Get() interface{} {
-	return l.l
+
+func (l logger) Get() interface{} { return l.l }
+
+// LoggerVar is a convenience wrapper for Logger. If nil, fl defaults to flag.CommandLine.
+func LoggerVar(fl *flag.FlagSet, l *log.Logger, name string, mode logMode, usage string) {
+	if fl == nil {
+		fl = flag.CommandLine
+	}
+
+	fl.Var(Logger(l, mode), name, usage)
 }
