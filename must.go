@@ -17,10 +17,7 @@ func MustHave(fl *flag.FlagSet, names ...string) error {
 	if fl == nil {
 		fl = flag.CommandLine
 	}
-	seen := make(map[string]bool)
-	fl.Visit(func(f *flag.Flag) {
-		seen[f.Name] = true
-	})
+	seen := listVisitedFlagNames(fl)
 	var missing MissingFlagsError
 	for _, name := range names {
 		if !seen[name] {
@@ -31,6 +28,14 @@ func MustHave(fl *flag.FlagSet, names ...string) error {
 		return nil
 	}
 	return handleErr(fl, missing)
+}
+
+func listVisitedFlagNames(fl *flag.FlagSet) map[string]bool {
+	seen := make(map[string]bool)
+	fl.Visit(func(f *flag.Flag) {
+		seen[f.Name] = true
+	})
+	return seen
 }
 
 // MissingFlagsError is the error type returned by MustHave.
