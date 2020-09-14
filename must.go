@@ -14,9 +14,7 @@ import (
 //
 // If nil, fl defaults to flag.CommandLine.
 func MustHave(fl *flag.FlagSet, names ...string) error {
-	if fl == nil {
-		fl = flag.CommandLine
-	}
+	fl = flagOrDefault(fl)
 	seen := listVisitedFlagNames(fl)
 	var missing MissingFlagsError
 	for _, name := range names {
@@ -28,14 +26,6 @@ func MustHave(fl *flag.FlagSet, names ...string) error {
 		return nil
 	}
 	return handleErr(fl, missing)
-}
-
-func listVisitedFlagNames(fl *flag.FlagSet) map[string]bool {
-	seen := make(map[string]bool)
-	fl.Visit(func(f *flag.Flag) {
-		seen[f.Name] = true
-	})
-	return seen
 }
 
 // MissingFlagsError is the error type returned by MustHave.
@@ -59,9 +49,7 @@ func (missing MissingFlagsError) Error() string {
 //
 // If nil, fl defaults to flag.CommandLine.
 func MustHaveArgs(fl *flag.FlagSet, min, max int) error {
-	if fl == nil {
-		fl = flag.CommandLine
-	}
+	fl = flagOrDefault(fl)
 	noMax := max < 0
 	if max < min && !noMax {
 		panic("mismatched arguments to MustHaveArgs")

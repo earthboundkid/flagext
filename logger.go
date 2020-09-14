@@ -65,9 +65,6 @@ func (l logger) Get() interface{} { return l.l }
 
 // LoggerVar is a convenience wrapper for Logger. If nil, fl defaults to flag.CommandLine.
 func LoggerVar(fl *flag.FlagSet, l *log.Logger, name string, mode logMode, usage string) {
-	if fl == nil {
-		fl = flag.CommandLine
-	}
-
+	fl = flagOrDefault(fl)
 	fl.Var(Logger(l, mode), name, usage)
 }

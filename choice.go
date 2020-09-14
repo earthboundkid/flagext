@@ -44,9 +44,7 @@ func (c choice) Get() interface{} {
 
 // ChoiceVar is a convenience wrapper for Choice. If nil, fl defaults to flag.CommandLine.
 func ChoiceVar(fl *flag.FlagSet, name, value, usage string, choices ...string) *string {
-	if fl == nil {
-		fl = flag.CommandLine
-	}
+	fl = flagOrDefault(fl)
 
 	fl.Var(Choice(&value, choices...), name, usage)
 	return &value

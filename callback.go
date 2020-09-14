@@ -8,9 +8,7 @@ import "flag"
 // If nil, fl defaults to flag.CommandLine.
 // Value is only used for showing the default in usage help.
 func Callback(fl *flag.FlagSet, name, value, usage string, cb func(string) error) {
-	if fl == nil {
-		fl = flag.CommandLine
-	}
+	fl = flagOrDefault(fl)
 
 	fl.Var(callback{cb, value}, name, usage)
 }
