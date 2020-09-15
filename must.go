@@ -3,7 +3,6 @@ package flagext
 import (
 	"flag"
 	"fmt"
-	"os"
 	"strings"
 )
 
@@ -69,18 +68,4 @@ func MustHaveArgs(fl *flag.FlagSet, min, max int) error {
 		err = fmt.Errorf("must have between %d and %d args; got %d", min, max, n)
 	}
 	return handleErr(fl, err)
-}
-
-func handleErr(fl *flag.FlagSet, err error) error {
-	fmt.Fprintln(fl.Output(), err)
-	if fl.Usage != nil {
-		fl.Usage()
-	}
-	switch fl.ErrorHandling() {
-	case flag.PanicOnError:
-		panic(err)
-	case flag.ExitOnError:
-		os.Exit(2)
-	}
-	return err
 }
