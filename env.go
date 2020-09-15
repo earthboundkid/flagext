@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+// ParseEnv lists any unset flags, checks whether a corresponding
+// environment variable exists, and if so calls Set with its value.
+// Flag names are prefixed and converted to SCREAMING_SNAKE_CASE when
+// looking up environment variables.
 func ParseEnv(fl *flag.FlagSet, prefix string) error {
 	fl = flagOrDefault(fl)
 	seen := listVisitedFlagNames(fl)

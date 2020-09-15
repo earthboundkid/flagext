@@ -18,7 +18,7 @@ func ExampleParseEnv() {
 
 	os.Setenv("TEST_ENV_A", "2")
 	os.Setenv("TEST_ENV_B", "3")
-	flagext.ParseEnv(fs, "TEST_ENV")
+	flagext.ParseEnv(fs, "test-env")
 
 	// Does not override existing values
 	fmt.Println("a", *a)
