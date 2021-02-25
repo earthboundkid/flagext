@@ -7,6 +7,8 @@ import "flag"
 //
 // If nil, fl defaults to flag.CommandLine.
 // Value is only used for showing the default in usage help.
+//
+// Deprecated: Use flag.Func in Go 1.16+.
 func Callback(fl *flag.FlagSet, name, value, usage string, cb func(string) error) {
 	fl = flagOrDefault(fl)
 
