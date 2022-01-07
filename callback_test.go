@@ -48,7 +48,7 @@ func ExampleCallback_goodFlag() {
 
 func ExampleCallback_defaultValue() {
 	fs := flag.NewFlagSet("ExampleCallback", flag.PanicOnError)
-	const usage = `...`
+
 	mode := "none"
 	flagext.Callback(fs, "mode", mode, "what mode to use", func(s string) error {
 		if s != strings.ToLower(s) {
