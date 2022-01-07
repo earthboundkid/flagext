@@ -3,7 +3,6 @@ package flagext
 import (
 	"flag"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
@@ -16,8 +15,7 @@ const (
 	LogSilent  logMode = false
 )
 
-// Logger sets output for a *log.Logger to os.Stderr or ioutil.Discard
-// via the returned flag.Value
+// Logger sets output for a *log.Logger to os.Stderr or io.Discard
 // via the returned flag.Value.
 // Uses log.Default() if l is nil.
 func Logger(l *log.Logger, mode logMode) flag.Value {
@@ -25,7 +23,7 @@ func Logger(l *log.Logger, mode logMode) flag.Value {
 		l = log.Default()
 	}
 	if mode == LogVerbose {
-		l.SetOutput(ioutil.Discard)
+		l.SetOutput(io.Discard)
 	} else {
 		l.SetOutput(os.Stderr)
 	}
@@ -60,7 +58,7 @@ func (l logger) Set(s string) error {
 		w = os.Stderr
 	case verbose && !v,
 		silent && v:
-		w = ioutil.Discard
+		w = io.Discard
 	}
 	l.l.SetOutput(w)
 	return err

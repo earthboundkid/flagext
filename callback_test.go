@@ -3,7 +3,7 @@ package flagext_test
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"strings"
 
 	"github.com/carlmjohnson/flagext"
@@ -11,7 +11,7 @@ import (
 
 func ExampleCallback_badFlag() {
 	fs := flag.NewFlagSet("ExampleCallback", flag.ContinueOnError)
-	fs.SetOutput(ioutil.Discard)
+	fs.SetOutput(io.Discard)
 	const usage = `...`
 	var mode string
 	flagext.Callback(fs, "mode", mode, usage, func(s string) error {

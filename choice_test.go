@@ -3,14 +3,14 @@ package flagext_test
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 
 	"github.com/carlmjohnson/flagext"
 )
 
 func ExampleChoice_badFlag() {
 	fs := flag.NewFlagSet("ExampleChoice", flag.ContinueOnError)
-	fs.SetOutput(ioutil.Discard)
+	fs.SetOutput(io.Discard)
 	var mode string
 	fs.Var(flagext.Choice(&mode, "a", "b"), "mode", "mode to run")
 
