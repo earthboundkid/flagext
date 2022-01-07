@@ -18,7 +18,12 @@ const (
 
 // Logger sets output for a *log.Logger to os.Stderr or ioutil.Discard
 // via the returned flag.Value
+// via the returned flag.Value.
+// Uses log.Default() if l is nil.
 func Logger(l *log.Logger, mode logMode) flag.Value {
+	if l == nil {
+		l = log.Default()
+	}
 	if mode == LogVerbose {
 		l.SetOutput(ioutil.Discard)
 	} else {
